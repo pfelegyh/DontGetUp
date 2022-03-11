@@ -16,9 +16,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class ScreenConnection {
+public class MouseConnection {
 
-    private static final String TAG = ScreenConnection.class.getSimpleName();
+    private static final String TAG = MouseConnection.class.getSimpleName();
 
     private final AtomicBoolean running = new AtomicBoolean(true);
     private final Queue<Vector> vectorQueue = new ConcurrentLinkedQueue<>();
@@ -26,7 +26,7 @@ public class ScreenConnection {
     private Future<?> vectorConsumerTask;
     private final CommunicationService communicationService;
 
-    public ScreenConnection(CommunicationService communicationService) {
+    public MouseConnection(CommunicationService communicationService) {
         this.communicationService = communicationService;
     }
 

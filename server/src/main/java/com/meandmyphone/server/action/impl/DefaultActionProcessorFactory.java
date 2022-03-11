@@ -21,7 +21,6 @@ public class DefaultActionProcessorFactory implements ActionProcessorFactory {
     private ActionProcessor shutdownActionProcessor;
     private ActionProcessor abortShutdownActionProcessor;
     private ActionProcessor setVolumeActionProcessor;
-    private ActionProcessor moveMouseActionProcessor;
     private ActionProcessor clickMouseActionProcessor;
     private ActionProcessor interpolateVolumeActionProcessor;
     private ActionProcessor sendKeysActionProcessor;
@@ -53,9 +52,6 @@ public class DefaultActionProcessorFactory implements ActionProcessorFactory {
             case ActionType.RELEASE_MOUSE_BUTTON: return new ReleaseMouseActionProcessor(mouseService);
             case ActionType.SEND_KEYS: return getSendKeysActionProcessor(keyboardService);
             case ActionType.SEND_NOTIFICATION: return new SendNotificationActionProcessor(notificationReceiver);
-            case ActionType.MOVE_MOUSE : return getMoveMouseActionProcessor(mouseService);
-            case ActionType.GET_SCREENS : return new GetScreensActionProcessor(mouseService);
-            case ActionType.MOVE_MOUSE_BY : return new MoveMouseByActionProcessor(mouseService);
             default: return new LoggingActionProcessor("No action found for: " + type);
         }
     }
@@ -65,13 +61,6 @@ public class DefaultActionProcessorFactory implements ActionProcessorFactory {
             sendKeysActionProcessor = new SendKeysActionProcessor(keyboardService);
         }
         return sendKeysActionProcessor;
-    }
-
-    private ActionProcessor getMoveMouseActionProcessor(MouseService mouseService) {
-        if (moveMouseActionProcessor == null) {
-            moveMouseActionProcessor = new MoveMouseActionProcessor(mouseService);
-        }
-        return moveMouseActionProcessor;
     }
 
     private ActionProcessor getClickMouseActionProcessor(MouseService mouseService) {

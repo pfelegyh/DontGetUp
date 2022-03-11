@@ -19,7 +19,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.meandmyphone.chupacabraremote.R;
 import com.meandmyphone.chupacabraremote.providers.impl.ClientContext;
-import com.meandmyphone.chupacabraremote.service.impl.ScreenConnection;
+import com.meandmyphone.chupacabraremote.service.impl.MouseConnection;
 import com.meandmyphone.chupacabraremote.ui.help.Help;
 import com.meandmyphone.chupacabraremote.ui.viewholders.MouseControlDialogViewHolder;
 import com.meandmyphone.shared.JSONKeys;
@@ -38,7 +38,7 @@ public class MouseControlDialog extends DialogFragment {
     private MouseControlDialogViewHolder mouseControlDialogViewHolder;
     private Vector center;
     private Vector current;
-    private ScreenConnection screenConnection;
+    private MouseConnection mouseConnection;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private Future<?> producerTask;
     private VectorProducer vectorProducer;
@@ -70,8 +70,8 @@ public class MouseControlDialog extends DialogFragment {
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);
         }
-        screenConnection = ClientContext.getInstance().getMouseService().buildMouseConnection();
-        screenConnection.start();
+        mouseConnection = ClientContext.getInstance().getMouseService().buildMouseConnection();
+        mouseConnection.start();
         vectorProducer = new VectorProducer();
         producerTask = executorService.submit(vectorProducer);
 
@@ -188,7 +188,7 @@ public class MouseControlDialog extends DialogFragment {
         vectorProducer.running.set(false);
         producerTask.cancel(true);
         executorService.shutdown();
-        screenConnection.stop();
+        mouseConnection.stop();
     }
 
     private class VectorProducer implements Runnable {
@@ -204,7 +204,7 @@ public class MouseControlDialog extends DialogFragment {
                 if (current != null && System.currentTimeMillis() - lastSendTime > SEND_THRESHOLD) {
                     lastSendTime = System.currentTimeMillis();
                     Vector calculated = calculateMouseMovement(current.getX(), current.getY());
-                    screenConnection.addVector(calculated);
+                    mouseConnection.addVector(calculated);
                 }
             }
         }

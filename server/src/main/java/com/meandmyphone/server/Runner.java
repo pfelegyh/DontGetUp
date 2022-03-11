@@ -33,7 +33,7 @@ public class Runner {
     private static MenuItem startStopServer;
     private static TrayIcon trayIcon;
 
-    private static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     public static void main(String[] args) throws Exception {
 
