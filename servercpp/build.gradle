@@ -15,6 +15,7 @@ library {
         compileTask.get().compilerArgs.add("/I" + includeDir)
         compileTask.get().compilerArgs.add("/I$JDK_13_HOME/include")
         compileTask.get().compilerArgs.add("/I$JDK_13_HOME/include/win32")
+        compileTask.get().compilerArgs.add("/I$projectDir/src/main/public")
         linkTask.get().linkerArgs.add("kernel32.lib")
         linkTask.get().linkerArgs.add("user32.lib")
         linkTask.get().linkerArgs.add("gdi32.lib")

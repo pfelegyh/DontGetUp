@@ -33,7 +33,7 @@ repositories {
 apply plugin: 'java'
 apply plugin: 'edu.sc.seis.launch4j'
 
-compileJava   {
+compileJava {
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
 
@@ -84,13 +84,6 @@ task obfuscate(type: ProGuardTask) {
     outjars "build/libs/server-release.jar"
 }
 
-task copyDllToBuiltJars(type: Copy) {
-    def serverCppProjDir = project(':servercpp').projectDir
-
-    from "$serverCppProjDir/build/lib/main/debug/servercpp.dll"
-    into "$buildDir/libs/"
-}
-
 task prepareInstallerFiles(type: Copy) {
     def serverCppProjDir = project(':servercpp').projectDir
 
@@ -132,7 +125,7 @@ task compileInstaller(type: Exec) {
 task createRelease(type: Copy) {
     java.nio.file.Path releaseDir = rootProject.projectDir.toPath().resolve("release")
 
-    def installer = file("$buildDir/installer/build/setup.exe")
+    def installer = file("$buildDir/installer/build/")
 
     doLast {
         if (!installer.exists()) throw new RuntimeException()
@@ -140,6 +133,14 @@ task createRelease(type: Copy) {
 
     from installer
     into releaseDir.toFile()
+    include('**/*.exe')
+}
+
+task cleanTempFiles(type: Delete) {
+    java.nio.file.Path releaseDir = rootProject.projectDir.toPath().resolve("release")
+
+    delete releaseDir.resolve("j2re-setup.exe").toFile()
+    delete releaseDir.resolve("server.exe").toFile()
 }
 
 task cleanRelease(type: Delete) {
@@ -154,12 +155,11 @@ task cleanHeaders(type: Delete) {
 jar.dependsOn(':shared:build')
 obfuscate.dependsOn(jar)
 createExe.dependsOn(obfuscate)
-createExe.dependsOn(copyDllToBuiltJars)
-copyDllToBuiltJars.dependsOn(':servercpp:build')
 prepareInstallerFiles.dependsOn(':servercpp:build')
 prepareInstallerFiles.dependsOn(createExe)
 compileInstaller.dependsOn(prepareInstallerFiles)
 createRelease.dependsOn(':app:createRelease')
 createRelease.dependsOn(compileInstaller)
+createRelease.finalizedBy(cleanTempFiles)
 clean.finalizedBy(cleanRelease)
 clean.finalizedBy(cleanHeaders)
