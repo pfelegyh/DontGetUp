@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mouseControlRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingEnd="16dp"
+            android:paddingStart="6dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/ic_close_black_24dp">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/helpButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@color/transparent"
+                android:src="@drawable/ic_help_black_24dp" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/contentRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="?attr/dialogColor"
+        >
+
+
+        <ImageView
+            android:id="@+id/mouseControl"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_mouse_black_24dp"
+            android:layout_weight="7"
+            />
+
+        <LinearLayout
+            android:id="@+id/mouseControlButtonBar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/left_click"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:minHeight="40dp"
+                android:src="@drawable/ic_mouse_left_click_24dp"
+                android:layout_margin="5dp"
+                android:longClickable="true"
+                android:background="?attr/colorPrimary"
+                >
+            </androidx.appcompat.widget.AppCompatImageButton>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/right_click"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:minHeight="40dp"
+                android:src="@drawable/ic_mouse_right_click_24dp"
+                android:layout_margin="5dp"
+                android:longClickable="true"
+                android:background="?attr/colorPrimary"
+                >
+            </androidx.appcompat.widget.AppCompatImageButton>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/cutuoutOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/helptText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textColor="?attr/colorPrimaryDark"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_anchor="@id/nexthelpPage"
+        app:layout_anchorGravity="top"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/nexthelpPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_big"
+        android:background="@color/transparent"
+        android:padding="@dimen/margin_small"
+        android:src="@drawable/ic_chevron_right_black_24dp"
+        android:visibility="invisible"
+        app:layout_anchor="@id/right_click"
+        app:layout_anchorGravity="top|end"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

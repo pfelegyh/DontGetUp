@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSecondary"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/contentRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/collapse_bar_height"
+        android:visibility="gone"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_big"
+            >
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/showPowerSettingsDialog"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_power_settings_new_black_24dp"
+                android:background="?attr/colorSecondary"
+                android:scaleType="fitCenter"
+                android:layout_margin="@dimen/margin_small"
+                android:onClick="onShowPowerSettingsClicked"
+                />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/showVolumeDialog"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_volume_up_black_24dp"
+                android:background="?attr/colorSecondary"
+                android:scaleType="fitCenter"
+                android:layout_margin="@dimen/margin_small"
+                android:onClick="onShowVolumeDialogClicked"
+                />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/showKeyboardControlDialog"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_keyboard_black_24dp"
+                android:background="?attr/colorSecondary"
+                android:scaleType="fitCenter"
+                android:layout_margin="@dimen/margin_small"
+                android:onClick="onShowKeyBoardControlDialogClicked"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/margin_big"
+            >
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/showMouseControlDialog"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/ic_mouse_black_24dp"
+                android:background="?attr/colorSecondary"
+                android:scaleType="fitCenter"
+                android:layout_margin="@dimen/margin_small"
+                android:onClick="onShowMouseControlDialogClicked"
+                />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+
+    <include layout="@layout/appbar_layout" />
+    <include layout="@layout/collapse_helper_layout" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/loadingTextAbove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/loadingRoundel"
+        app:layout_anchorGravity="top"
+        android:text="@string/loadingTextAbove"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:paddingBottom="@dimen/margin_big"
+        android:textColor="?attr/colorPrimaryDark"
+        android:visibility="invisible"
+        android:textStyle="bold"
+        />
+
+    <ProgressBar
+        android:id="@+id/loadingRoundel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:alpha="0.75"
+        android:indeterminate="true"
+        android:indeterminateTint="?attr/colorPrimary"
+        android:scaleX="2"
+        android:scaleY="2" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/loadingTextBelow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/loadingRoundel"
+        app:layout_anchorGravity="bottom"
+        android:text="@string/loadingTextBelow"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:paddingTop="@dimen/margin_very_big"
+        android:textColor="?attr/colorPrimaryDark"
+        android:visibility="invisible"
+        android:textStyle="bold"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/cutuoutOverlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/helptText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_anchor="@id/nexthelpPage"
+        app:layout_anchorGravity="top" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/nexthelpPage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_big"
+        android:background="@color/transparent"
+        android:padding="@dimen/margin_small"
+        android:src="@drawable/ic_chevron_right_black_24dp"
+        android:visibility="invisible"
+        app:layout_anchor="@id/contentRoot"
+        app:layout_anchorGravity="bottom|end" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

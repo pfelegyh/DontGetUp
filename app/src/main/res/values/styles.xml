@@ -1,0 +1,57 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+<!--        secondary background-->
+        <item name="colorPrimary">@color/lightGrey</item>
+<!--        foreground-->
+        <item name="colorPrimaryDark">@color/black</item>
+<!--        primary background-->
+        <item name="colorSecondary">@color/brightWhite</item>
+<!--        highlight-->
+        <item name="colorAccent">@color/lightGrey</item>
+        <item name="dialogColor">@color/smokyWhite</item>
+    </style>
+
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/darkGrey</item>
+        <item name="colorPrimaryDark">@color/dirtyWhite</item>
+        <item name="colorSecondary">@color/black</item>
+        <item name="colorAccent">@color/darkGrey</item>
+        <item name="dialogColor">@color/lightBlack</item>
+    </style>
+
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyCustomTheme" parent="@android:style/Theme.Panel">
+        <item name="android:windowAnimationStyle">@style/VolumeControlDialogAnimation.Window</item>
+    </style>
+
+    <style name="VolumeControlDialogAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/volume_control_in</item>
+        <item name="android:windowExitAnimation">@anim/volume_control_out</item>
+
+    </style>
+
+    <style name="ShutdownControlDialogAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/shutdown_control_in</item>
+        <item name="android:windowExitAnimation">@anim/shutdown_control_out</item>
+        <item name="android:windowContentOverlay">@color/dirtyWhite</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@color/dirtyWhite</item>
+    </style>
+
+    <style name="MouseControlDialogAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/mouse_control_in</item>
+        <item name="android:windowExitAnimation">@anim/mouse_control_out</item>
+    </style>
+
+    <style name="KeyboardControlDialogAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/keyboard_control_in</item>
+        <item name="android:windowExitAnimation">@anim/keyboard_control_out</item>
+    </style>
+
+</resources>

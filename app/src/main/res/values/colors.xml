@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="darkGrey">#434B4D</color>
+    <color name="lightGrey">#878888</color>
+    <color name="black">#191A1B</color>
+    <color name="dirtyWhite">#E8E4C9</color>
+    <color name="brightWhite">#D9DCED</color>
+    <color name="smokyWhite">#F5F5F5</color>
+    <color name="red">#FF4444</color>
+    <color name="transparent">#00ABCDEF</color>
+    <color name="forestGreen">#22C822</color>
+    <color name="lightBlack">#303030</color>
+</resources>

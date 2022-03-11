@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="collapse_bar_height">24dp</dimen>
+    <dimen name="margin_small">15dp</dimen>
+    <dimen name="margin_big">30dp</dimen>
+    <dimen name="margin_very_big">60dp</dimen>
+</resources>

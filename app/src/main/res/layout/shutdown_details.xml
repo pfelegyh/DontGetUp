@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/delayedShutdownConfigurationPanel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="@color/transparent"
+    android:visibility="gone">
+
+    <ViewSwitcher
+        android:id="@+id/timePickerSwitcher"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TimePicker
+            android:id="@+id/shutdownDelayedTimePicker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <RelativeLayout
+            android:id="@+id/shutdownCounterPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/shutdownCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textAlignment="center"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="20sp"/>
+
+        </RelativeLayout>
+
+    </ViewSwitcher>
+
+</RelativeLayout>
+
+                

@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/dialogColor"
+    android:orientation="vertical"
+    android:id="@+id/interpolationRoot"
+    android:visibility="gone"
+    >
+
+    <Spinner
+        android:id="@+id/interpolationTypeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/yAxisText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:rotation="270"
+            android:text="@string/volume"
+            android:textColor="?attr/colorPrimaryDark"
+            />
+
+        <TextView
+            android:id="@+id/xAxisText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/interpolationChart"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/time"
+            android:textColor="?attr/colorPrimaryDark"
+            />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/interpolationChart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/yAxisText"
+            android:minHeight="300dp"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

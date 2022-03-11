@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/collapseHelper"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/collapse_bar_height"
+    android:layout_gravity="bottom"
+    android:background="@color/transparent"
+    android:orientation="horizontal"
+    app:layout_anchor="@+id/appBar"
+    app:layout_anchorGravity="bottom">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="8"
+        android:background="@color/transparent" />
+
+    <ViewSwitcher
+        android:id="@+id/collapseHelperButtonSwitcher"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/collapse_bar_height"
+        android:layout_weight="1"
+        >
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/collapseHelperExpander"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:background="@color/transparent"
+            android:onClick="onCollapseHelperDownArrowClicked"
+            android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/collapseHelperShrinker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:background="@color/transparent"
+            android:onClick="onCollapseHelperUpArrowClicked"
+            android:src="@drawable/ic_keyboard_arrow_up_black_24dp" />
+
+
+    </ViewSwitcher>
+
+
+</LinearLayout>

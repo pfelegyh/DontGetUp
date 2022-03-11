@@ -1,0 +1,33 @@
+apply plugin: 'cpp-library'
+
+library {
+    targetMachines.add(machines.windows.x86_64)
+
+    if (!file(JDK_13_HOME).exists()) throw new IllegalStateException("JDK 13 not found!");
+
+    println "JDK13 found at: $JDK_13_HOME"
+
+    binaries.configureEach {
+
+        def serverProjDir = project(':server').projectDir
+        def includeDir = file("$serverProjDir/src/main/include").absolutePath
+
+        compileTask.get().compilerArgs.add("/I" + includeDir)
+        compileTask.get().compilerArgs.add("/I$JDK_13_HOME/include")
+        compileTask.get().compilerArgs.add("/I$JDK_13_HOME/include/win32")
+        linkTask.get().linkerArgs.add("kernel32.lib")
+        linkTask.get().linkerArgs.add("user32.lib")
+        linkTask.get().linkerArgs.add("gdi32.lib")
+        linkTask.get().linkerArgs.add("winspool.lib")
+        linkTask.get().linkerArgs.add("comdlg32.lib")
+        linkTask.get().linkerArgs.add("advapi32.lib")
+        linkTask.get().linkerArgs.add("shell32.lib")
+        linkTask.get().linkerArgs.add("ole32.lib")
+        linkTask.get().linkerArgs.add("oleaut32.lib")
+        linkTask.get().linkerArgs.add("uuid.lib")
+        linkTask.get().linkerArgs.add("odbc32.lib")
+        linkTask.get().linkerArgs.add("odbccp32.lib")
+    }
+}
+
+build.dependsOn(':server:jar')

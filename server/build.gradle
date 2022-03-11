@@ -1,0 +1,165 @@
+import proguard.gradle.ProGuardTask
+
+/*
+    1. Create jar
+        + copy dlls
+    2  Creates jni headers at include dir
+    3. Obfuscate
+    4. Create l4j exe
+        + copy dlls
+    5. Prepare installer workdir
+        (nsi, jre.ini, release notes, binaries - dlls, java iftw installer, l4j exe)
+    6. Compile installer
+    7. Copy installer to release folder
+
+*/
+
+buildscript {
+    repositories {
+        //noinspection JcenterRepositoryObsolete edu.sc.seis.gradle not present in maventCentral
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'edu.sc.seis.gradle:launch4j:2.4.6'
+        classpath 'com.guardsquare:proguard-gradle:7.2.1'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'edu.sc.seis.launch4j'
+
+compileJava   {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    options.compilerArgs += ["-h", file("src/main/include")]
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation project(':shared')
+    implementation 'joda-time:joda-time:2.10.13'
+    implementation 'org.json:json:20211205'
+}
+
+launch4j {
+    mainClassName = 'com.meandmyphone.server.Runner'
+    jar = "$buildDir/libs/server-release.jar"
+    outfile = 'server.exe'
+    companyName = "Me and My Phone"
+    icon "${projectDir}/src/main/resources/me_and_my_phone_hw8_icon.ico"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.meandmyphone.server.Runner'
+    }
+    from {
+        configurations.runtimeClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+task obfuscate(type: ProGuardTask) {
+    configuration 'proguard.txt'
+
+    libraryjars "${System.getProperty('java.home')}/lib/rt.jar"
+    libraryjars "/build/launch4j/lib/shared.jar"
+    libraryjars "/build/launch4j/lib/joda-time-2.10.6.jar"
+    libraryjars "/build/launch4j/lib/json-20190722.jar"
+    libraryjars "$System.env.JAVA_HOME/jmods/java.base.jmod"
+    libraryjars "$System.env.JAVA_HOME/jmods/java.desktop.jmod"
+    libraryjars "$System.env.JAVA_HOME/jmods/java.logging.jmod"
+    injars "build/libs/server.jar"
+    outjars "build/libs/server-release.jar"
+}
+
+task copyDllToBuiltJars(type: Copy) {
+    def serverCppProjDir = project(':servercpp').projectDir
+
+    from "$serverCppProjDir/build/lib/main/debug/servercpp.dll"
+    into "$buildDir/libs/"
+}
+
+task prepareInstallerFiles(type: Copy) {
+    def serverCppProjDir = project(':servercpp').projectDir
+
+    from "$serverCppProjDir/build/lib/main/debug/servercpp.dll"
+    into "$buildDir/installer/build/"
+
+    from "$projectDir/build/launch4j/server.exe"
+    into "$buildDir/installer/build/"
+
+    from "$projectDir/nsis/installer.nsi"
+    into "$buildDir/installer/build/"
+
+    from "$projectDir/nsis/j2re-setup.exe"
+    into "$buildDir/installer/build/"
+
+    from "$projectDir/nsis/jre.ini"
+    into "$buildDir/installer/build/"
+
+    from "$projectDir/nsis/release_notes.txt"
+    into "$buildDir/installer/build/"
+}
+
+task compileInstaller(type: Exec) {
+    def nsisHome = NSIS_HOME
+
+    if (!file(nsisHome).toPath().resolve("makensis.exe").toFile().exists()) throw new IllegalStateException("NSIS not found");
+
+    println "NSIS found at: $nsisHome"
+
+    def cmd = new LinkedList<String>();
+    cmd.add('cmd')
+    cmd.add('/c')
+    cmd.add('"' + nsisHome + '/makensis.exe"')
+    cmd.add("${projectDir}/build/installer/build/installer.nsi")
+
+    commandLine cmd.toArray()
+}
+
+task createRelease(type: Copy) {
+    java.nio.file.Path releaseDir = rootProject.projectDir.toPath().resolve("release")
+
+    def installer = file("$buildDir/installer/build/setup.exe")
+
+    doLast {
+        if (!installer.exists()) throw new RuntimeException()
+    }
+
+    from installer
+    into releaseDir.toFile()
+}
+
+task cleanRelease(type: Delete) {
+    java.nio.file.Path releaseDir = projectDir.toPath().resolve("release")
+    delete releaseDir.toFile()
+}
+
+task cleanHeaders(type: Delete) {
+    delete file("${projectDir}/src/main/include")
+}
+
+jar.dependsOn(':shared:build')
+obfuscate.dependsOn(jar)
+createExe.dependsOn(obfuscate)
+createExe.dependsOn(copyDllToBuiltJars)
+copyDllToBuiltJars.dependsOn(':servercpp:build')
+prepareInstallerFiles.dependsOn(':servercpp:build')
+prepareInstallerFiles.dependsOn(createExe)
+compileInstaller.dependsOn(prepareInstallerFiles)
+createRelease.dependsOn(':app:createRelease')
+createRelease.dependsOn(compileInstaller)
+clean.finalizedBy(cleanRelease)
+clean.finalizedBy(cleanHeaders)

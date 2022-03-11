@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="?attr/dialogColor"
+    android:orientation="horizontal"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="25dp">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/muteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_volume_up_black_24dp"
+        android:background="@color/transparent"
+        />
+
+    <SeekBar
+        android:id="@+id/volumeControl"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:max="65535"
+        android:maxHeight="3dp"
+        android:minHeight="3dp"
+        android:scrollbarStyle="outsideInset"
+        android:tag="volumeController"
+        android:thumbTint="?attr/colorPrimaryDark" />
+
+</LinearLayout>

@@ -1,0 +1,53 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 31
+    defaultConfig {
+        applicationId "com.meandmyphone.chupacabraremote"
+        minSdkVersion 24
+        targetSdkVersion 31
+        versionCode 6
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            buildConfigField "int", "LOGLEVEL", "0"
+        }
+        release {
+            buildConfigField "int", "LOGLEVEL", "2"
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    buildToolsVersion '30.0.3'
+    ndkVersion '22.0.7026061'
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'com.google.android.material:material:1.5.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation project(path: ':shared')
+    implementation 'joda-time:joda-time:2.10.13'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+
+}
+
+task createRelease(type: Copy) {
+    java.nio.file.Path releaseDir = rootProject.projectDir.toPath().resolve("release")
+
+    from "$projectDir/release/"
+    include '*'
+    into releaseDir.toFile()
+}
+
+createRelease.dependsOn(assemble)

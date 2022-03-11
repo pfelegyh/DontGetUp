@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/rate"
+        android:title="@string/rate_this_app" />
+    <item
+        android:id="@+id/themes"
+        android:title="@string/select_theme">
+        <menu>
+            <item
+                android:id="@+id/darkMode"
+                android:title="@string/dark_mode"
+                android:checkable="true"
+                android:checked="true"
+                />
+            <item
+                android:id="@+id/lightMode"
+                android:title="@string/light_mode"
+                android:checkable="true"
+                android:checked="false"
+                />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/animations"
+        android:title="@string/animations"
+        android:checkable="true"
+        android:checked="true"
+        />
+</menu>

@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name">Don\'t get up!</string>
+    <string name="volume">Volume</string>
+    <string name="time">Time</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="skipText">Skip tutorial?</string>
+    <string name="skipAction">Skip</string>
+
+    <string name="sendServerSubject">%s installation instructions</string>
+    <string name="sendServerMessage">Hello!\nYou can download %s from this link: %s.\nBest regards,\n\tMe and My Phone</string>
+
+    <string name="loadingTextAbove">Building up a connection seems to be taking a lot of time…</string>
+    <string name="loadingTextBelow">Please make sure you\'re on the same LAN, the PC is running the server Application and your WIFI is enabled. Check that your firewall is not blocking the connection and port 9010 is to open</string>
+
+    <string name="activityWelcomeHelp">Welcome to the interactive help! Tap anywhere to continue to the next message.</string>
+    <string name="activityServerItemHelp">You can see all the connected PCs listed here.</string>
+    <string name="activityConnectionIconHelp">This icon turns to a warning sign, if connection to the server was lost.</string>
+    <string name="activityConnectButtonHelp">Tap this button to connect/disconnect to that server.</string>
+    <string name="activityFavouritButtonHelp">If a server is marked as favourite, the client will try to automatically connect to during startup.</string>
+    <string name="activiyHelpButtonHelp">Interactive help will be shown to you, if you tap this button.</string>
+    <string name="activityExpanderHelp">You can expand/collapse the list of located servers with this button.</string>
+    <string name="activitySendServerButtonHelp1">You can get a download URL to the Windows component of this app.</string>
+    <string name="activitySendServerButtonHelp2">The app can only connect to PCs those are running the Windows application.</string>
+    <string name="activityOpenVolumeHelp">Tapping this button will open the Volume control page.</string>
+    <string name="activityOpenShutdownHelp">Tapping this button will open the Shutdown control page.</string>
+    <string name="activityOpenMouseHelp">Tapping this button will open the Mouse control page.</string>
+    <string name="activityOpenKeyboardHelp">Tapping this button will open the Keyboard control page.</string>
+
+    <string name="shutdownControlDialogShutdownNowHelp">Tapping this button will shutdown your computer immediately.</string>
+    <string name="shutdownControlDialogShutdownDelayedHelp">Tapping this button will display additional options for a delayed shutdown.</string>
+    <string name="shutdownControlDialogShutdownTimePickerHelp">You can select the time on this timepicker, when you want your computer to shutdown.</string>
+    <string name="shutdownControlDialogShutdownStartDelayedShutdownHelp">Tapping this button will launch a delayed shutdown.</string>
+    <string name="shutdownControlDialogShutdownAbortDelayedShutdownHelp1">This button becomes accessible, when there is a pending scheduled shutdown.</string>
+    <string name="shutdownControlDialogShutdownAbortDelayedShutdownHelp2">Tapping this button will abort the pending scheduled shutdown.</string>
+    <string name="shutdownControlDialogShutdownVolumeOptions">Tapping this button will open the volume interpolation page, where you can configure a gradual decrease of the connected PC\'s volume, before it shuts down.</string>
+
+    <string name="mouseControlDialogMouseControlHelp1">Tapping and swiping on the mouse image, will move the mouse cursor on the connected PC.</string>
+    <string name="mouseControlDialogMouseControlHelp2">The longer your swipe, the faster the mouse will move.</string>
+    <string name="mouseControlDialogLeftClickHelp1">Tapping this button will generate a left mouse click on the connected PC.</string>
+    <string name="mouseControlDialogLeftClickHelp2">Long-tapping this button will generate hold/release left mouse button event on the connected PC.</string>
+    <string name="mouseControlDialogRightClickHelp1">Tapping this button will generate a right mouse click on the connected PC.</string>
+    <string name="mouseControlDialogRightClickHelp2">Long-tapping this button will generate hold/release right mouse button event on the connected PC.</string>
+
+    <string name="volumeControlDialogVolumeControlHelp">You can control the volume of your pc with this slider, it gets updated if volume has been changed on the connected pc.</string>
+    <string name="volumeControlDialogMuteButtonHelp">Tapping this button will mute/unmute your pc.</string>
+    <string name="volumeControlDialogInterpolationSpinnerHelp">You can select an ease function for a gradual decrease of volume, until the time of delayed the shutdown is reached.</string>
+    <string name="volumeControlDialogInterpolationChartHelp">You can preview the estimated volume change, based on your selected interpolation function, in this chart.</string>
+    <string name="volumeControlDialogInterpolateVolumeButtonHelp">Tapping this button will launch a delayed shutdown, during which the volume will gradually decrease to 0.</string>
+
+    <string name="keyboardControlDialogHelp1">Tap on the keyboard image to open up the soft keyboard.</string>
+    <string name="keyboardControlDialogHelp2">Keys pressed on the soft keyboard will be sent to the connected pc.</string>
+
+    <string name="rate_this_app">Rate this app</string>
+    <string name="select_theme">Select Theme</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="animations">Animations</string>
+
+</resources>

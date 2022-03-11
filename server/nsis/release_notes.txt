@@ -1,0 +1,19 @@
+1.0
+    Completely FREE and Ad-free!
+
+    You can
+     - Shutdown your computer
+     - Change the volume
+     - Control the mouse cursor
+     - Control your keyboard
+    when you're on the same LAN.
+
+    For this you have to install a windows app on your device, which is also completely free and ad free.
+
+    Feel free to block any access to/from the Windows app in your firewall outside your LAN, or do
+    the same for your Android App as well. Ports: 9010 and 9082 has to be open on both devices, and
+    local network communication has to be possible.
+
+    The app contains a 'sleep enhancer shutdown mode', where you can configure the volume on the
+    connected PC to gradually decrease until 0, and shut it down when the interpolation terminates.
+    It is great, if you're watching movies on your PC before falling asleep...

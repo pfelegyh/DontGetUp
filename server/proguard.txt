@@ -1,0 +1,31 @@
+-dontwarn org.joda.convert.**
+
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+-adaptresourcefilenames
+
+-keep public class org.joda.**
+-keep public class org.**
+-keep class com.meandmyphone.shared.** { *; }
+-keep class com.meandmyphone.util.** { *; }
+-keep class com.meandmyphone.server.vo.Point
+-keep class com.meandmyphone.server.vo.Screen
+
+-keepclassmembers class com.meandmyphone.server.vo.Point {
+    private <fields>;
+}
+
+-keepclassmembers class com.meandmyphone.server.vo.Screen {
+    private <fields>;
+}
+
+-keepclasseswithmembers public class * {
+    public static void main(java.lang.String[]);
+}
+
+-keepclasseswithmembernames,includedescriptorclasses class * {
+    native <methods>;
+}
