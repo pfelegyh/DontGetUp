@@ -4,72 +4,49 @@
 #include "com_meandmyphone_server_services_impl_VolumeService.h"
 #include "com_meandmyphone_server_services_impl_MouseService.h"
 #include "com_meandmyphone_server_services_impl_KeyboardService.h"
+#include "VolumeDll.h"
 #include <jni.h>
 #include <iostream>
 #include <vector>
 
 #define DLLExport __declspec(dllexport)
-
-
 extern "C"
 {
 
-	typedef struct _JNI_POSREC_SCREEN {
-		jclass cls;
-		jmethodID constructortorID;
-		jfieldID indexId;
-		jfieldID leftId;
-		jfieldID topId;
-		jfieldID rightId;
-		jfieldID bottomId;
-	} JNI_POSREC_SCREEN;
-
-	typedef struct _JNI_POSREC_POINT {
+	typedef struct _JNI_POINT {
 		jclass cls;
 		jmethodID constructortorID;
 		jfieldID x;
 		jfieldID y;
-	} JNI_POSREC_POINT;
+	} JNI_POINT;	
 
-
-	struct Screen {
-		int index;
-		int left;
-		int top;
-		int right;
-		int bottom;
-	};
-
-
-	void InitializeScreenData();
-	BOOL CALLBACK MonitorEnumProc(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData);
-	void LoadJniPosRecScreen(JNIEnv* env);
-	void LoadJniPosRecPoint(JNIEnv* env);
-
-	std::vector<Screen> screens;
-	JNI_POSREC_SCREEN* jniPos_screen = NULL;
-	JNI_POSREC_POINT* jniPos_point = NULL;
-
+	JNI_POINT* jni_point = NULL;
 	jint previousVolume = -1;
-	bool screenInitialized = false;
 
 	JNIEXPORT jint JNICALL Java_com_meandmyphone_server_services_impl_VolumeService_getVolume(JNIEnv*, jobject) {
 		HRESULT hr;
+
 		CoInitialize(NULL);
 		IMMDeviceEnumerator* deviceEnumerator = NULL;
+
 		hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID*)&deviceEnumerator);
+
 		IMMDevice* defaultDevice = NULL;
 		hr = deviceEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &defaultDevice);
 		deviceEnumerator->Release();
 		deviceEnumerator = NULL;
+
 		IAudioEndpointVolume* endpointVolume = NULL;
 		hr = defaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, NULL, (LPVOID*)&endpointVolume);
 		defaultDevice->Release();
 		defaultDevice = NULL;
+
 		float currentVolume = 0;
 		hr = endpointVolume->GetMasterVolumeLevelScalar(&currentVolume);
+
 		endpointVolume->Release();
 		CoUninitialize();
+
 		jint retval = (jint)(65535 * currentVolume);
 		if (previousVolume != retval) {
 			std::cout << "Volume change detected, current volume = " << retval << std::endl;
@@ -84,9 +61,10 @@ extern "C"
 
 		CoInitialize(NULL);
 		IMMDeviceEnumerator* deviceEnumerator = NULL;
-		hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID*)&deviceEnumerator);
-		IMMDevice* defaultDevice = NULL;
 
+		hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID*)&deviceEnumerator);
+
+		IMMDevice* defaultDevice = NULL;
 		hr = deviceEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &defaultDevice);
 		deviceEnumerator->Release();
 		deviceEnumerator = NULL;
@@ -97,29 +75,28 @@ extern "C"
 		defaultDevice = NULL;
 
 		float volumeNormalized = volume / (float)65535.0;
-
 		hr = endpointVolume->SetMasterVolumeLevelScalar((float)volumeNormalized, NULL);
 
 		endpointVolume->Release();
-
 		CoUninitialize();
 	}
 
 	JNIEXPORT jobject JNICALL Java_com_meandmyphone_server_services_impl_MouseService_getMousePosition(JNIEnv* env, jobject) {
 		LPPOINT point = new POINT;
 		GetCursorPos(point);
+		
 		int x = point->x;
 		int y = point->y;
 
-		LoadJniPosRecPoint(env);
+		LoadJniPoint(env);
 
-		jobject jPos_point = env->NewObject(jniPos_point->cls, jniPos_point->constructortorID);
+		jobject jPos_point = env->NewObject(jni_point->cls, jni_point->constructortorID);
 
 		jint jix = (jint)x;
-		env->SetIntField(jPos_point, jniPos_point->x, jix);
+		env->SetIntField(jPos_point, jni_point->x, jix);
 
 		jint jiy = (jint)y;
-		env->SetIntField(jPos_point, jniPos_point->y, jiy);
+		env->SetIntField(jPos_point, jni_point->y, jiy);
 
 		return jPos_point;
 	}
@@ -136,39 +113,7 @@ extern "C"
 			mouse_event(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
 		}
 	}
-
-	JNIEXPORT jobjectArray JNICALL Java_com_meandmyphone_server_services_impl_MouseService_getScreens(JNIEnv* env, jobject) {
-
-		if (!screenInitialized) {
-			InitializeScreenData();
-		}
-
-		LoadJniPosRecScreen(env);
-		jobjectArray jPosRecArray = env->NewObjectArray(screens.size(), jniPos_screen->cls, NULL);
-
-
-		for (int i = 0; i < screens.size(); ++i) {
-			Screen element = screens[i];
-
-			jobject jPos_screen = env->NewObject(jniPos_screen->cls, jniPos_screen->constructortorID);
-			jint index = (jint)element.index;
-			env->SetIntField(jPos_screen, jniPos_screen->indexId, index);
-			jint left = (jint)element.left;
-			env->SetIntField(jPos_screen, jniPos_screen->leftId, left);
-			jint top = (jint)element.top;
-			env->SetIntField(jPos_screen, jniPos_screen->topId, top);
-			jint right = (jint)element.right;
-			env->SetIntField(jPos_screen, jniPos_screen->rightId, right);
-			jint bottom = (jint)element.bottom;
-			env->SetIntField(jPos_screen, jniPos_screen->bottomId, bottom);
-
-			env->SetObjectArrayElement(jPosRecArray, i, jPos_screen);
-
-		}
-
-		return jPosRecArray;
-	}
-
+	
 	JNIEXPORT void JNICALL Java_com_meandmyphone_server_services_impl_MouseService_holdMouseButton(JNIEnv*, jobject, jint button) {
 		if (button == 0)
 			mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
@@ -288,72 +233,13 @@ extern "C"
 
 	}
 
-	void LoadJniPosRecScreen(JNIEnv* env) {
+	void LoadJniPoint(JNIEnv* env) {
+		jni_point = new JNI_POINT;
 
-		jniPos_screen = new JNI_POSREC_SCREEN;
-
-		jniPos_screen->cls = env->FindClass("com/meandmyphone/server/vo/Screen");
-
-		jniPos_screen->constructortorID = env->GetMethodID(jniPos_screen->cls, "<init>", "()V");
-		jniPos_screen->indexId = env->GetFieldID(jniPos_screen->cls, "index", "I");
-		jniPos_screen->leftId = env->GetFieldID(jniPos_screen->cls, "left", "I");
-		jniPos_screen->topId = env->GetFieldID(jniPos_screen->cls, "top", "I");
-		jniPos_screen->rightId = env->GetFieldID(jniPos_screen->cls, "right", "I");
-		jniPos_screen->bottomId = env->GetFieldID(jniPos_screen->cls, "bottom", "I");
-
-	}
-
-	void LoadJniPosRecPoint(JNIEnv* env) {
-		jniPos_point = new JNI_POSREC_POINT;
-
-		jniPos_point->cls = env->FindClass("com/meandmyphone/server/vo/Point");
-		jniPos_point->constructortorID = env->GetMethodID(jniPos_point->cls, "<init>", "()V");
-		jniPos_point->x = env->GetFieldID(jniPos_point->cls, "x", "I");
-		jniPos_point->y = env->GetFieldID(jniPos_point->cls, "y", "I");
-	}
-
-
-	void InitializeScreenData()
-	{
-		screens.clear();
-		EnumDisplayMonitors(NULL, NULL, MonitorEnumProc, (LPARAM)NULL);
-
-		std::cout << "---------------------" << std::endl;
-		std::cout << "Initializing Screens" << std::endl;
-
-		for (int i = 0; i < screens.size(); ++i) {
-			Screen element = screens[i];
-			std::cout << "---- Monitor " << screens[i].index << "---- " << std::endl;
-			std::cout << "left" << screens[i].left << std::endl;
-			std::cout << "top" << screens[i].top << std::endl;
-			std::cout << "right" << screens[i].right << std::endl;
-			std::cout << "bottom" << screens[i].bottom << std::endl;
-		}
-
-		std::cout << "Number of monitors: " << screens.size() << std::endl;
-		std::cout << "---------------------" << std::endl;
-
-	}
-
-
-	BOOL CALLBACK MonitorEnumProc(HMONITOR hMonitor, HDC hdcMonitor, LPRECT lprcMonitor, LPARAM dwData)
-	{
-
-		MONITORINFO target;
-		target.cbSize = sizeof(MONITORINFO);
-
-		GetMonitorInfo(hMonitor, &target);
-
-		Screen screen;
-		screen.index = screens.size();
-		screen.left = target.rcMonitor.left;
-		screen.top = target.rcMonitor.top;
-		screen.right = target.rcMonitor.right;
-		screen.bottom = target.rcMonitor.bottom;
-
-		screens.push_back(screen);
-
-		return TRUE;
+		jni_point->cls = env->FindClass("com/meandmyphone/server/vo/Point");
+		jni_point->constructortorID = env->GetMethodID(jni_point->cls, "<init>", "()V");
+		jni_point->x = env->GetFieldID(jni_point->cls, "x", "I");
+		jni_point->y = env->GetFieldID(jni_point->cls, "y", "I");
 	}
 
 }
