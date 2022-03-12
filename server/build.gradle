@@ -87,7 +87,7 @@ task obfuscate(type: ProGuardTask) {
 task prepareInstallerFiles(type: Copy) {
     def serverCppProjDir = project(':servercpp').projectDir
 
-    from "$serverCppProjDir/build/lib/main/debug/servercpp.dll"
+    from "$serverCppProjDir/build/lib/main/release/servercpp.dll"
     into "$buildDir/installer/build/"
 
     from "$projectDir/build/launch4j/server.exe"
@@ -155,7 +155,7 @@ task cleanHeaders(type: Delete) {
 jar.dependsOn(':shared:build')
 obfuscate.dependsOn(jar)
 createExe.dependsOn(obfuscate)
-prepareInstallerFiles.dependsOn(':servercpp:build')
+prepareInstallerFiles.dependsOn(':servercpp:assembleRelease')
 prepareInstallerFiles.dependsOn(createExe)
 compileInstaller.dependsOn(prepareInstallerFiles)
 createRelease.dependsOn(':app:createRelease')
